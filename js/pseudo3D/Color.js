@@ -1,4 +1,6 @@
-
+/*
+ * Color object. Just to wrap standard rgb(r,g,b) notation.
+ */
 var Pseudo3D = (function (module){
 	
 	module.Color = function (r,g,b){
