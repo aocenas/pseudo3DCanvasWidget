@@ -1,16 +1,5 @@
 
-/*
- Made by Andrej Ocenas.
- Feel free to do what you want with this code, just do not expect it to do anything.
-*/
-
-(function (){
-  
-  if (!window.console) console = {};
-  console.log = console.log || function(){};
-  
-  // Comment this line if you want console logs.
-  console.log = function(){};
+require(["pseudo3D"],function (pseudo3D){
   
   // Array grid which is translated to into starting 
   // positions of the points and thus to some object.
@@ -66,15 +55,11 @@
   
   
 	
-	window.onload = function(){
-		var canvas = document.getElementById("main_canvas");
-		var c3D = new Pseudo3D.Context3D(canvas);	
-		var grid = new Pseudo3D.PointGrid(grid3D);	
-		
-		/*
-		 * Function to start the rotation animation.
-		 */
-		(function rotating() {
+	window.onload = function () {
+			
+			var canvas = document.getElementById("main_canvas");
+			var c3D = new pseudo3D.Context3D(canvas);	
+			var grid = new pseudo3D.PointGrid(grid3D);	
 			
 			var angle = 0;
 			
@@ -85,7 +70,7 @@
 			var rotate = function (){
 				c3D.clear();
 				c3D.drawPointGrid(grid,c3D.fill);
-				grid.rotate(0,angleToRotateInOneStep,0,{x:Pseudo3D.X00,y:Pseudo3D.Y00,z:Pseudo3D.Z00});
+				grid.rotate(0,angleToRotateInOneStep,0,{x:pseudo3D.X00 + 50,y:pseudo3D.Y00,z:pseudo3D.Z00 - 50});
 				angle = angle + angleToRotateInOneStep;
 				
 				if(angle <= (Math.PI + angleToRotateInOneStep)){
@@ -94,9 +79,6 @@
 			};
 			rotate();
 			
-		}());
-		
-	
-  };
+		};
 
-})();
+});

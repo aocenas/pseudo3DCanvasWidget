@@ -1,12 +1,14 @@
 /*
  * Color object. Just to wrap standard rgb(r,g,b) notation.
  */
-var Pseudo3D = (function (module){
+define(function (){
+	
+	var module = {};
 	
 	module.Color = function (r,g,b){
 		this.rgb = "rgb(" + r + "," + g + "," + b + ")";
 	}
 	
-	return module;
+	return module.Color;
 	
-}(window.Pseudo3D || {}))
+});

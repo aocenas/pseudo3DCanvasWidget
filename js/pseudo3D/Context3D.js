@@ -3,25 +3,9 @@
  * 
  */
 
-var Pseudo3D = (function (module){
+define(["pseudo3D/console","pseudo3D/globals"],function (console, globals){
 	
-	// How big will the point appear.
-	module.POINT_RADIUS = 5;
-	// Spacing between points on the grid.
-	module.GRID_SPACING = 15;
-	
-	// Dimensions of the actual HTML canvas.
-	module.CONTEXT_WIDTH = 400;
-	module.CONTEXT_HEIGHT = 200;
-	
-	// Should be suposed distance of the canvas for same calculations but 
-	// does not work as intended(bigger the number, closer/bigger the object seems to be) 
-	module.CONTEXT_DISTANCE = 200;
-	
-	// Center of the canvas.
-	module.Z00 = 200;  
-	module.X00 = module.CONTEXT_WIDTH/2;
-	module.Y00 = module.CONTEXT_HEIGHT/2;
+	var module = globals;
 	
 	/*
 	 * Initialization of the wrapper with the canvas element.
@@ -88,6 +72,6 @@ var Pseudo3D = (function (module){
 	}
   };
   
-  return module;
+  return module.Context3D;
 	
-}(window.Pseudo3D || {}))
+});

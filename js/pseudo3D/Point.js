@@ -3,8 +3,9 @@
  * Point object do define some point in space with coordinates and diameter.
  */
 
-var Pseudo3D = (function (module){
+define(["pseudo3D/console"],function (console){
 	
+	var module = {};
 	/*
 	 * Constructor. Takes coordinates, diameter and color as parameters.
 	 */
@@ -70,6 +71,6 @@ var Pseudo3D = (function (module){
 		}
 	};
 	
-	return module;
+	return module.Point;
 	
-}(window.Pseudo3D || {}))
+});

@@ -6,9 +6,9 @@
  */
 
 
-var Pseudo3D = (function (module){
+define(["pseudo3D/console","pseudo3D/Point","pseudo3D/globals","pseudo3D/Color"],function (console, Point, globals,Color){
 	
-	
+	var module = globals;
 	/*
 	 * Constructor method which takes a 3 dimensional array.
 	 */
@@ -34,7 +34,7 @@ var Pseudo3D = (function (module){
 				var y = (relativeYGrid * module.GRID_SPACING) + module.Y00;
 				var z = (relativeZGrid * module.GRID_SPACING) + module.Z00;
 				
-				this.points[this.points.length] = new module.Point(x,y,z,module.POINT_RADIUS,new module.Color(0,0,0));
+				this.points[this.points.length] = new Point(x,y,z,module.POINT_RADIUS,new Color(0,0,0));
 				
 			  }
 			  
@@ -55,6 +55,6 @@ var Pseudo3D = (function (module){
 		}
 	};
 	
-	return module;
+	return module.PointGrid;
 	
-}(window.Pseudo3D || {}))
+});
