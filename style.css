@@ -4,12 +4,12 @@ margin:0;
 padding:0;
 }
 
-div.container {
+.container {
   position:relative;
   width:100%;
 }
 
-div.center {
+.center {
   margin-left:auto;
   margin-right:auto;
   width:405px;
