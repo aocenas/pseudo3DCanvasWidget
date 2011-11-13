@@ -30,5 +30,5 @@ define(function (){
 		Z00 : z00,  
 		X00 : x00,
 		Y00 : y00
-	}
+	};
 });
