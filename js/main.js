@@ -1,71 +1,20 @@
 
-require(["pseudo3D"],function (pseudo3D){
+require(["pseudo3D","data"],function (pseudo3D,data){
   
   // Array grid which is translated to into starting 
   // positions of the points and thus to some object.
-  var grid3D =
-	[
-	  [ //Zlayer -2
-	  [1,0,0,0,0,0,1],
-	  [0,1,0,0,0,1,0],
-	  [0,0,0,0,0,0,0],
-	  [0,0,0,0,0,0,0],
-	  [0,0,0,0,0,0,0],
-	  [0,1,0,0,0,1,0],
-	  [1,0,0,0,0,0,1]
-	  ],
-	  [//Zlayer -1
-	  [0,0,0,0,0,0,0],
-	  [0,1,0,0,0,1,0],
-	  [0,0,1,1,1,0,0],
-	  [0,0,1,0,1,0,0],
-	  [0,0,1,1,1,0,0],
-	  [0,1,0,0,0,1,0],
-	  [0,0,0,0,0,0,0]
-	  ],
-	  [//Zlayer 0
-	  [0,0,0,0,0,0,0],
-	  [0,0,0,0,0,0,0],
-	  [0,0,1,1,1,0,0],
-	  [0,0,1,1,1,0,0],
-	  [0,0,1,1,1,0,0],
-	  [0,0,0,0,0,0,0],
-	  [0,0,0,0,0,0,0]
-	  ],
-	  [//Zlayer 1
-	  [0,0,0,0,0,0,0],
-	  [0,1,0,0,0,1,0],
-	  [0,0,1,1,1,0,0],
-	  [0,0,1,0,1,0,0],
-	  [0,0,1,1,1,0,0],
-	  [0,1,0,0,0,1,0],
-	  [0,0,0,0,0,0,0]
-	  ],
-	  [//Zlayer 2
-	  [1,0,0,0,0,0,1],
-	  [0,1,0,0,0,1,0],
-	  [0,0,0,0,0,0,0],
-	  [0,0,0,0,0,0,0],
-	  [0,0,0,0,0,0,0],
-	  [0,1,0,0,0,1,0],
-	  [1,0,0,0,0,0,1]
-	  ]
-	]
-  
-  
-  
 	
 	window.onload = function () {
 			
 			var canvas = document.getElementById("main_canvas");
 			var c3D = new pseudo3D.Context3D(canvas);	
-			var grid = new pseudo3D.PointGrid(grid3D);	
-			
+			var grid = new pseudo3D.PointGrid(data);	
+
 			var angle = 0;
 			
 			var angleToRotateInOneStep = Math.PI/256;
-			var timeFor180Degrees = 10 * 1000;
-			var tomeForOneRotationStep = timeFor180Degrees / (Math.PI/(Math.PI/256));
+			var timeFor180Degrees = 2 * 1000;
+			var timeForOneRotationStep = timeFor180Degrees / (Math.PI/(Math.PI/256));
 			
 			var rotate = function (){
 				c3D.clear();
@@ -73,8 +22,8 @@ require(["pseudo3D"],function (pseudo3D){
 				grid.rotate(0,angleToRotateInOneStep,0,{x:pseudo3D.X00 + 50,y:pseudo3D.Y00,z:pseudo3D.Z00 - 50});
 				angle = angle + angleToRotateInOneStep;
 				
-				if(angle <= (Math.PI + angleToRotateInOneStep)){
-					setTimeout(rotate,20);
+				if(angle <= (2*Math.PI + angleToRotateInOneStep)){
+					setTimeout(rotate,timeForOneRotationStep);
 				}
 			};
 			rotate();
