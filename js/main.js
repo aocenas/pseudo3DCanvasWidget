@@ -63,7 +63,7 @@ require(["pseudo3D"],function (pseudo3D){
 			
 			var angle = 0;
 			
-			var angleToRotateInOneStep = Math.PI/256;
+			var angleToRotateInOneStep = Math.PI/128;
 			var timeFor180Degrees = 10 * 1000;
 			var tomeForOneRotationStep = timeFor180Degrees / (Math.PI/(Math.PI/256));
 			
@@ -73,7 +73,7 @@ require(["pseudo3D"],function (pseudo3D){
 				grid.rotate(0,angleToRotateInOneStep,0,{x:pseudo3D.X00 + 50,y:pseudo3D.Y00,z:pseudo3D.Z00 - 50});
 				angle = angle + angleToRotateInOneStep;
 				
-				if(angle <= (Math.PI + angleToRotateInOneStep)){
+				if(angle <= (2*Math.PI + angleToRotateInOneStep)){
 					setTimeout(rotate,20);
 				}
 			};
