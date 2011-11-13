@@ -1,0 +1,6 @@
+{
+	name: "Pseudo3D",
+	modules: [	"Pseudo3D", "console", "Color",
+				"globals", "Point", "PointGrid",
+				"Context3D" ]
+}
