@@ -6,7 +6,7 @@
  */
 
 
-Pseudo3D.PointGrid = (function (console, Point, globals,Color){
+define(['console', 'Point', 'globals','Color'],function (console, Point, globals,Color){
 
 	/*
 	 * Constructor method which takes a 3 dimensional array.
@@ -29,11 +29,11 @@ Pseudo3D.PointGrid = (function (console, Point, globals,Color){
 				var relativeYGrid = j - Math.floor(lengthj/2);
 				var relativeZGrid = i - Math.floor(lengthi/2);
 				  
-				var x = (relativeXGrid * module.GRID_SPACING) + module.X00;
-				var y = (relativeYGrid * module.GRID_SPACING) + module.Y00;
-				var z = (relativeZGrid * module.GRID_SPACING) + module.Z00;
+				var x = (relativeXGrid * globals.GRID_SPACING) + globals.X00;
+				var y = (relativeYGrid * globals.GRID_SPACING) + globals.Y00;
+				var z = (relativeZGrid * globals.GRID_SPACING) + globals.Z00;
 				
-				this.points[this.points.length] = new Point(x,y,z,module.POINT_RADIUS,new Color(0,0,0));
+				this.points[this.points.length] = new Point(x,y,z,globals.POINT_RADIUS,new Color(0,0,0));
 				
 			  }
 			  
@@ -56,4 +56,4 @@ Pseudo3D.PointGrid = (function (console, Point, globals,Color){
 	
 	return PointGrid;
 	
-})(Pseudo3D.console, Pseudo3D.Point, Pseudo3D.globals, Pseudo3D.Color);
+});

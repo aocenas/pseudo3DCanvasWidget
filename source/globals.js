@@ -1,7 +1,7 @@
 /*
  * Definition of variables global to pseudo3D module
  */
-pseudo3D.globals = (function (){
+define(function (){
 	
 	var pointRadius = 5;
 	var gridSpacing = 15;
@@ -31,4 +31,4 @@ pseudo3D.globals = (function (){
 		X00 : x00,
 		Y00 : y00
 	}
-})();
+});

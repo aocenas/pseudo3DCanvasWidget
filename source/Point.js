@@ -3,7 +3,7 @@
  * Point object do define some point in space with coordinates and diameter.
  */
 
-Pseudo3D.Point = (function (console){
+define(['console'],function (console){
 	
 	/*
 	 * Constructor. Takes coordinates, diameter and color as parameters.
@@ -72,4 +72,4 @@ Pseudo3D.Point = (function (console){
 	
 	return Point;
 	
-})(Pseudo3D.console);
+});
