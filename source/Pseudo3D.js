@@ -1,7 +1,6 @@
-var Pseudo3D = {};
-require(['Context3D','PointGrid','globals'],function(Context3D,PointGrid,globals){
+define(['Context3D','PointGrid','globals'],function(Context3D,PointGrid,globals){
 
-	Pseudo3D = {
+	return {
 		start : function(options,data){
 			
 			var canvas = document.getElementById(options.canvasId);
