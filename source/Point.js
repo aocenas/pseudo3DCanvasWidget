@@ -1,8 +1,6 @@
-
 /*
  * Point object do define some point in space with coordinates and diameter.
  */
-
 define(['console'],function (console){
 	
 	/*
@@ -62,8 +60,8 @@ define(['console'],function (console){
 			
 			// Adding angle to x,y,z (we are turning it only on the horizontal XZ plane 
 			// so we need to compute only x and z coordinates)
-			this.x = (Math.sin(xzAngle + angleFromCenter) * distanceFromCenterXZ) + centerPoint.x;
-			this.z = (Math.cos(xzAngle + angleFromCenter) * distanceFromCenterXZ) + centerPoint.z;
+			this.x = Math.round(((Math.sin(xzAngle + angleFromCenter) * distanceFromCenterXZ) + centerPoint.x)*1000)/1000;
+			this.z = Math.round(((Math.cos(xzAngle + angleFromCenter) * distanceFromCenterXZ) + centerPoint.z)*1000)/1000;
 			
 			console.log("after rotation x,y,z = " + this.x + "," + this.y + "," + this.z);
 			
