@@ -17,27 +17,25 @@ define(['console', 'Point', 'globals','Color'],function (console, Point, globals
 		
 		for(var i = 0,lengthi = mapGrid.length; i < lengthi; i++){ //for Z layers or depth
 		  for(var j = 0,lengthj = mapGrid[i].length; j < lengthj; j++){ //for Y lines or height
-			for(var k = 0, lengthk = mapGrid[i][j].length; k < lengthk; k++){ //for X columns or width
-			  
-			  if(mapGrid[i][j][k] == 1){
-				
-				
-				// Object defined by the mapGrid array should be in the center of the canvas
-				// so some we need to calculate right coordinates
-				
-				var relativeXGrid = k - Math.floor(lengthk/2);
-				var relativeYGrid = j - Math.floor(lengthj/2);
-				var relativeZGrid = i - Math.floor(lengthi/2);
-				  
-				var x = (relativeXGrid * globals.GRID_SPACING) + globals.X00;
-				var y = (relativeYGrid * globals.GRID_SPACING) + globals.Y00;
-				var z = (relativeZGrid * globals.GRID_SPACING) + globals.Z00;
-				
-				this.points[this.points.length] = new Point(x,y,z,globals.POINT_RADIUS,new Color(0,0,0));
-				
-			  }
-			  
-			}
+        for(var k = 0, lengthk = mapGrid[i][j].length; k < lengthk; k++){ //for X columns or width
+          
+          if(mapGrid[i][j][k] == 1){
+          
+            // Object defined by the mapGrid array should be in the center of the canvas
+            // so some we need to calculate right coordinates
+            
+            var relativeXGrid = k - Math.floor(lengthk/2);
+            var relativeYGrid = j - Math.floor(lengthj/2);  
+            var relativeZGrid = i - Math.floor(lengthi/2);
+
+            var x = (relativeXGrid * globals.GRID_SPACING) + globals.X00;
+            var y = (relativeYGrid * globals.GRID_SPACING) + globals.Y00;
+            var z = (relativeZGrid * globals.GRID_SPACING) + globals.Z00;
+            
+            this.points[this.points.length] = new Point(x,y,z,globals.POINT_RADIUS,new Color(0,0,0));
+          
+          }
+        }
 		  }
 		}
 	};
