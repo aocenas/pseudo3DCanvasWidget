@@ -51,25 +51,24 @@ $(document).ready(function(){
       
       pointGrid.rotate(0,0,Math.PI/2,center);
       expectedPoints[0] = new Point(globals.X00,
-                                      globals.Y00 - globals.GRID_SPACING,
-                                      globals.Z00,
-                                      globals.POINT_RADIUS,
-                                      new Color(0,0,0));
-      expectedPoints[2] = new Point(globals.X00,
                                       globals.Y00 + globals.GRID_SPACING,
                                       globals.Z00,
                                       globals.POINT_RADIUS,
                                       new Color(0,0,0));
-                                      
+      expectedPoints[2] = new Point(globals.X00,
+                                      globals.Y00 - globals.GRID_SPACING,
+                                      globals.Z00,
+                                      globals.POINT_RADIUS,
+                                      new Color(0,0,0));
       deepEqual(pointGrid.points,expectedPoints,"YZ rotation OK");
       
       pointGrid.rotate(Math.PI/2,0,0,center);
-      expectedPoints[0] = new Point(globals.X00 - globals.GRID_SPACING,
+      expectedPoints[0] = new Point(globals.X00 + globals.GRID_SPACING,
                                       globals.Y00,
                                       globals.Z00,
                                       globals.POINT_RADIUS,
                                       new Color(0,0,0));
-      expectedPoints[2] = new Point(globals.X00 + globals.GRID_SPACING,
+      expectedPoints[2] = new Point(globals.X00 - globals.GRID_SPACING,
                                       globals.Y00,
                                       globals.Z00,
                                       globals.POINT_RADIUS,
