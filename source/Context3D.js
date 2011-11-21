@@ -41,32 +41,32 @@ define(['console','globals'],function (console, globals){
 				this.context.arc(posX,posY,radius,0,Math.PI*2,false);
 			}
 		},
-	fill : function(){
-	  this.context.fill();
-	},
-	stroke : function(){
-	  this.context.stroke();
-	},
-	beginPath : function(){
-	  this.context.beginPath();
-	},
-	/*
-	 * Drawing each point of the grid separately. It takes grid of points and function which 
-	 * will be caled after the drawing(that means fill or stroke method)
-	 */
-	drawPointGrid : function (pointGrid,func){
-		this.beginPath();
-		pointGrid.points.forEach(function(point){this.drawPoint(point)},this);
-		try{
-			func.apply(this);
-		}catch( e){
-			// Fail over.
-			this.stroke();
-		}
-	},
-	clear : function (){
-		this.canvas.width = this.canvas.width;
-	}
+    fill : function(){
+      this.context.fill();
+    },
+    stroke : function(){
+      this.context.stroke();
+    },
+    beginPath : function(){
+      this.context.beginPath();
+    },
+    /*
+     * Drawing each point of the grid separately. It takes grid of points and function which 
+     * will be caled after the drawing(that means fill or stroke method)
+     */
+    drawPointGrid : function (pointGrid,func){
+      this.beginPath();
+      pointGrid.points.forEach(function(point){this.drawPoint(point)},this);
+      try{
+        func.apply(this);
+      }catch( e){
+        // Fail over.
+        this.stroke();
+      }
+    },
+    clear : function (){
+      this.canvas.width = this.canvas.width;
+    }
   };
   
   return Context3D;
