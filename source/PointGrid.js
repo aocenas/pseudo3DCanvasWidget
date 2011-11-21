@@ -22,10 +22,10 @@ define(['console', 'Point', 'globals','Color'],function (console, Point, globals
           if(mapGrid[i][j][k] == 1){
           
             // Object defined by the mapGrid array should be in the center of the canvas
-            // so some we need to calculate right coordinates
+            // so we need to calculate right coordinates
             
             var relativeXGrid = k - Math.floor(lengthk/2);
-            var relativeYGrid = j - Math.floor(lengthj/2);  
+            var relativeYGrid = j - Math.floor(lengthj/2);
             var relativeZGrid = i - Math.floor(lengthi/2);
 
             var x = (relativeXGrid * globals.GRID_SPACING) + globals.X00;
@@ -48,10 +48,8 @@ define(['console', 'Point', 'globals','Color'],function (console, Point, globals
 					point.rotate(xyAngle,xzAngle,yzAngle,centerPoint)
 				});
 			
-			
 		}
 	};
 	
 	return PointGrid;
-	
 });
