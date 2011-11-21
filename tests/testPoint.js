@@ -32,6 +32,14 @@ $(document).ready(function(){
       point.rotate(pi, 0, 0, {x : 0, y : 10, z : 0});
       equal(point.x + " " + point.y + " " + point.z,"0 20 0", "Rotation 4 ok");
       
+			point = new Point(0, 0, 0, 10, new Color(255,255,255));
+      point.rotate(0, pi/2, pi, {x : 10, y : 0, z : 0});
+      equal(point.x + " " + point.y + " " + point.z,"10 0 -10", "Rotation 5 ok");
+      
+      point.rotate(pi/2, 0, 0, {x : 20, y : 0, z : 0});
+      equal(point.x + " " + point.y + " " + point.z,"20 10 -10", "Rotation 6 ok");
+      
+			
     });
   });
 });
