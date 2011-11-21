@@ -32,6 +32,6 @@ $(document).ready(function(){
       point.rotate(pi, 0, 0, {x : 0, y : 10, z : 0});
       equal(point.x + " " + point.y + " " + point.z,"0 20 0", "Rotation 4 ok");
       
-    });   
+    });
   });
 });
