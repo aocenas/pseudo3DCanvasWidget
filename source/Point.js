@@ -22,49 +22,53 @@ define(['console'],function (console){
 		 */
 		rotate : function (xyAngle,xzAngle,yzAngle,centerPoint){
 			
-			
 			console.log("rotating point x,y,z = " + this.x + "," + this.y + "," + this.z);
 			console.log("angle xy,xz,yz " + xyAngle/Math.PI + "PI," + xzAngle/Math.PI + "PI," + yzAngle/Math.PI + "PI, around x,y,z = " 
 							+ centerPoint.x + "," + centerPoint.y + "," + centerPoint.z);
 			
+			var self = this;
+			[[xyAngle,'x','y'],[xzAngle,'x','z'],[yzAngle,'y','z']].forEach(function(angle){
 			
-			// Calculate coordinates relative to the point we are going rotate around.
-			var centerRelativeX = this.x - centerPoint.x;
-			var centerRelativeY = this.y - centerPoint.y;
-			var centerRelativeZ = this.z - centerPoint.z;
-			
-			
-			// Calculating distance from center but only on the XZ plane.
-			var distanceFromCenterXZ = Math.round(
-									  Math.sqrt(Math.pow(centerRelativeZ,2) +
-												Math.pow(centerRelativeX,2)
-												)
-									  );
-		
-			// To correctly compute the angle we need to know into which quadrant are we going to fall.
-			var quadrant = centerRelativeX >= 0 ? (centerRelativeZ >= 0? 1 : 2) : (centerRelativeZ >= 0 ? 4 : 3);
+				// Calculate coordinates relative to the point, we are going rotate around.
+				var relative = {x : self.x - centerPoint.x,
+												y : self.y - centerPoint.y,
+												z : self.z - centerPoint.z};
+				
+				console.log("rotating in plane " + angle[1] + angle[2] + " by " + angle[0]);
+        
+        // Calculating distance from center.
+        var distanceFromCenter = Math.round(
+          Math.sqrt(Math.pow(relative[angle[2]],2) +
+            Math.pow(relative[angle[1]],2)
+          )
+        );
+        
+        // To correctly compute the angle we need to know into which quadrant are we going to fall.
+        var quadrant = relative[angle[1]] >= 0 ? (relative[angle[2]] >= 0? 1 : 2) : (relative[angle[2]] >= 0 ? 4 : 3);
 
-			var angleFromCenter = distanceFromCenterXZ === 0 ? 0 : Math.asin(Math.abs(centerRelativeX)/distanceFromCenterXZ);
+        var angleFromCenter = distanceFromCenter === 0 ? 0 : Math.asin(Math.abs(relative[angle[1]])/distanceFromCenter);
 
-			switch(quadrant){
-				case 1: break;
-				case 2:	angleFromCenter = Math.PI - angleFromCenter;
-						break;
-				case 3:	angleFromCenter = Math.PI + angleFromCenter;
-						break;
-				case 4:	angleFromCenter = Math.PI*2 - angleFromCenter;
-						break;
-			}
-			
-			console.log("angleFromCenter = " + angleFromCenter/Math.PI + "PI");
-			
-			// Adding angle to x,y,z (we are turning it only on the horizontal XZ plane 
-			// so we need to compute only x and z coordinates)
-			this.x = Math.round(((Math.sin(xzAngle + angleFromCenter) * distanceFromCenterXZ) + centerPoint.x)*1000)/1000;
-			this.z = Math.round(((Math.cos(xzAngle + angleFromCenter) * distanceFromCenterXZ) + centerPoint.z)*1000)/1000;
-			
-			console.log("after rotation x,y,z = " + this.x + "," + this.y + "," + this.z);
-			
+        switch(quadrant){
+          case 1: break;
+          case 2:	angleFromCenter = Math.PI - angleFromCenter;
+              break;
+          case 3:	angleFromCenter = Math.PI + angleFromCenter;
+              break;
+          case 4:	angleFromCenter = Math.PI*2 - angleFromCenter;
+              break;
+        }
+        console.log("angleFromCenter = " + angleFromCenter/Math.PI + "PI");
+        
+        // Adding angle to x,y,z
+				
+				var first = Math.round(((Math.sin(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[1]])*1000)/1000;
+				var second = Math.round(((Math.cos(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[2]])*1000)/1000;
+        self[angle[1]] = first;
+        self[angle[2]] = second;
+        
+        console.log("after rotation x,y,z = " + self.x + "," + self.y + "," + self.z);
+        
+      });
 		}
 	};
 	
