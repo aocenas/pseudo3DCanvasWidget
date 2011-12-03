@@ -11,7 +11,7 @@ define(['console', 'Point', 'globals','Color'],function (console, Point, globals
 	/*
 	 * Constructor method which takes a 3 dimensional array.
 	 */
-	PointGrid = function (mapGrid){
+	var PointGrid = function (mapGrid){
 		this.mapGrid = mapGrid;
 		this.points = [];
 		
