@@ -1,27 +1,55 @@
+/*
+ * Definition of public API
+ */
 define(['Context3D','PointGrid','globals'],function(Context3D,PointGrid,globals){
 
-	return {
-		start : function(options,data){
-			
-			var canvas = document.getElementById(options.canvasId);
-			var c3D = new Context3D(canvas);
-			var grid = new PointGrid(data);
-			var angle = 0;
-
-			var rotate = function (){
-				c3D.clear();
-				c3D.drawPointGrid(grid,c3D.fill);
-				grid.rotate(0,options.oneStepAngle,0,{x:globals.X00 + options.centerXOffset,
-													  y:globals.Y00,
-													  z:globals.Z00 + options.centerZOffset});
-				angle = angle + options.oneStepAngle;
-					
-				if(angle <= (2*Math.PI + options.oneStepAngle)){
-					setTimeout(rotate,options.oneStepTime);
-				}
-			};
-			rotate();
+	window.Pseudo3D = window.Pseudo3D || function (canvas){
+		if(!canvas){
+			return null;
 		}
-	}
+		if(typeof canvas === 'string'){
+			canvas = document.getElementById(canvas);
+		}
+		var c3d = new Context3D(canvas);
+		
+		// Return only public API
+		return {
+			draw : function(){
+				c3d.draw();
+				return this;
+			},
+			clear : function(){
+				c3d.clear();
+				return this;
+			},
+			rotate : function(options, rotateOnly){
+				c3d.rotate(options, rotateOnly);
+				return this;
+			},
+			//Specific rotate functions
+			rotateXY : function(angle, center){
+				c3d.rotate({xy : angle, xz : 0, yz : 0, center : center}, false);
+				return this;
+			},
+			rotateXZ : function(angle, center){
+				c3d.rotate({xy : 0, xz : angle, yz : 0, center : center}, false);
+				return this;
+			},
+			rotateYZ : function(angle, center){
+				c3d.rotate({xy : 0, xz : 0, yz : angle, center : center}, false);
+				return this;
+			},
+			clearModel : function(){
+				c3d.clearModel();
+				return this;
+			},
+			addModel : function(model){
+				c3d.addModel(model);
+				return this;
+			}
+		};
+		
+	};
+	return window.Pseudo3D;
 
 });
