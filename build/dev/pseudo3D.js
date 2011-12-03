@@ -30,59 +30,76 @@ define('Point',['console'],function (console){
 	Point.prototype = {
 		
 		/*
-		 * Function to rotate point(recalculate coordinates) around some other point in space.
-		 * It takes 3 angles for each axis(or beter planes as they are marked acording of the plane we are rotating on) 
-		 * and point to rotate around.
+		 * Function to rotate point(recalculate coordinates) around some other 
+		 * point in space. It takes 3 angles for each axis(or beter planes as they
+		 * are marked acording of the plane we are rotating on) and point to rotate
+		 * around.
 		 */
 		rotate : function (xyAngle,xzAngle,yzAngle,centerPoint){
-			
-			console.log("rotating point x,y,z = " + this.x + "," + this.y + "," + this.z);
-			console.log("angle xy,xz,yz " + xyAngle/Math.PI + "PI," + xzAngle/Math.PI + "PI," + yzAngle/Math.PI + "PI, around x,y,z = " 
-							+ centerPoint.x + "," + centerPoint.y + "," + centerPoint.z);
-			
-			var self = this;
-			[[xyAngle,'x','y'],[xzAngle,'x','z'],[yzAngle,'y','z']].forEach(function(angle){
-			
+			if(!this.isSamePosition(centerPoint)){
+				console.log("rotating point x,y,z = " + this.x + "," + this.y + "," + this.z);
+				console.log("angle xy,xz,yz " + xyAngle/Math.PI + "PI," + 
+										xzAngle/Math.PI + "PI," + yzAngle/Math.PI + 
+										"PI, around x,y,z = " + centerPoint.x + "," +
+										 centerPoint.y + "," + centerPoint.z);
+				
 				// Calculate coordinates relative to the point, we are going rotate around.
-				var relative = {x : self.x - centerPoint.x,
-												y : self.y - centerPoint.y,
-												z : self.z - centerPoint.z};
+				var relative = {x : this.x - centerPoint.x,
+												y : this.y - centerPoint.y,
+												z : this.z - centerPoint.z};
 				
-				console.log("rotating in plane " + angle[1] + angle[2] + " by " + angle[0]);
-        
-        // Calculating distance from center.
-        var distanceFromCenter = Math.round(
-          Math.sqrt(Math.pow(relative[angle[2]],2) +
-            Math.pow(relative[angle[1]],2)
-          )
-        );
-        
-        // To correctly compute the angle we need to know into which quadrant are we going to fall.
-        var quadrant = relative[angle[1]] >= 0 ? (relative[angle[2]] >= 0? 1 : 2) : (relative[angle[2]] >= 0 ? 4 : 3);
-
-        var angleFromCenter = distanceFromCenter === 0 ? 0 : Math.asin(Math.abs(relative[angle[1]])/distanceFromCenter);
-
-        switch(quadrant){
-          case 1: break;
-          case 2:	angleFromCenter = Math.PI - angleFromCenter;
-              break;
-          case 3:	angleFromCenter = Math.PI + angleFromCenter;
-              break;
-          case 4:	angleFromCenter = Math.PI*2 - angleFromCenter;
-              break;
-        }
-        console.log("angleFromCenter = " + angleFromCenter/Math.PI + "PI");
-        
-        // Adding angle to x,y,z
+				// 'this' needs to be maped, as it`s meaning changes in the folowing loop,
+				// and adding it to the end of forEach function would not be very obvious
+				var self = this;
 				
-				var first = Math.round(((Math.sin(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[1]])*1000)/1000;
-				var second = Math.round(((Math.cos(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[2]])*1000)/1000;
-        self[angle[1]] = first;
-        self[angle[2]] = second;
-        
-        console.log("after rotation x,y,z = " + self.x + "," + self.y + "," + self.z);
-        
-      });
+				// we loop for each angle so we can rotate in 3 directions in one loop
+				[[xyAngle,'x','y'],[xzAngle,'x','z'],[yzAngle,'y','z']]
+					.filter(function (item){return item[0] !== 0;})
+					.forEach(function(angle){
+					
+					console.log("rotating in plane " + angle[1] + angle[2] + " by " + angle[0]);
+					
+					// Calculating distance from center.
+					var distanceFromCenter = Math.round(
+						Math.sqrt(Math.pow(relative[angle[2]],2) +
+							Math.pow(relative[angle[1]],2)
+						)
+					);
+					
+					// To correctly compute the angle we need to know into which quadrant
+					// are we going to fall.
+					var quadrant = relative[angle[1]] >= 0 ? 
+						(relative[angle[2]] >= 0? 1 : 2) :
+						(relative[angle[2]] >= 0 ? 4 : 3);
+
+					var angleFromCenter = distanceFromCenter === 0 ? 0 : Math.asin(Math.abs(relative[angle[1]])/distanceFromCenter);
+
+					switch(quadrant){
+						case 1: break;
+						case 2:	angleFromCenter = Math.PI - angleFromCenter;
+								break;
+						case 3:	angleFromCenter = Math.PI + angleFromCenter;
+								break;
+						case 4:	angleFromCenter = Math.PI*2 - angleFromCenter;
+								break;
+					}
+					console.log("angleFromCenter = " + angleFromCenter/Math.PI + "PI");
+					
+					// Adding angle to x,y,z
+					self[angle[1]] = Math.round(((Math.sin(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[1]])*1000)/1000;
+					self[angle[2]] = Math.round(((Math.cos(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[2]])*1000)/1000;
+					
+					console.log("after rotation x,y,z = " + self.x + "," + self.y + "," + self.z);
+					
+				});
+			}
+		},
+		toString : function(){
+			return 'x' + this.x + 'y' + this.y + 'z' + this.z; 
+		},
+		// Returns true if all coordinates are equal.
+		isSamePosition : function(otherPoint){
+			return this.x === otherPoint.x && this.y === otherPoint.y && this.z === otherPoint.z;
 		}
 	};
 	
@@ -132,80 +149,6 @@ define('globals',[],function (){
 	}
 });
 /*
- * Wrapper object for canvas and some variables controling the look and feel of the display.
- * 
- */
-define('Context3D',['console','globals'],function (console, globals){
-	
-	/*
-	 * Initialization of the wrapper with the canvas element.
-	 */
-	var Context3D = function (canvas){
-		this.canvas = canvas;
-		this.context = canvas.getContext("2d");
-	};
- 
-	Context3D.prototype = {
-		
-		/*
-		 * Drawing point on tha canvas. Actual position on the canvas and radius is computed with 
-		 * consideration of the Z coordinate of the drawn point. 
-		 */
-		drawPoint : function(point){
-			console.log("Drawing point x = " + point.x + ", y = " + point.y + ", z = " + point.z + ", radius = " + point.diameter);
-			
-			// Pading of the layer. This means the diference between dimensions of the canvas and 
-			// dimensions of the suposed canvas with given depth (z coordinate), so that we can 
-			// move the point to the center, even after position recalculation.
-			var paddingX = (globals.CONTEXT_WIDTH - ((globals.CONTEXT_WIDTH/point.z) * globals.CONTEXT_DISTANCE))/2;
-			var paddingY = (globals.CONTEXT_HEIGHT - ((globals.CONTEXT_HEIGHT/point.z) * globals.CONTEXT_DISTANCE))/2;
-			
-			// Calculating actual position of the point on the canvas according to its depth.
-			var posX = ((point.x/point.z) * globals.CONTEXT_DISTANCE) + paddingX;
-			var posY = ((point.y/point.z) * globals.CONTEXT_DISTANCE) + paddingY;
-			var radius = (point.diameter/point.z) * globals.CONTEXT_DISTANCE;
-			
-			console.log("Drawing to posX = " + posX + ", posY = " + posY + ", radius = " + radius);
-			
-			// Draw the point only if the point does not cross borders of the canvas. 
-			if(radius > 0 && posX-radius > 0 && posX+radius < globals.CONTEXT_WIDTH && posY-radius > 0 && posY+radius < globals.CONTEXT_HEIGHT ){
-				this.context.fillStyle = point.rgb;
-				this.context.moveTo(posX + radius,posY);
-				this.context.arc(posX,posY,radius,0,Math.PI*2,false);
-			}
-		},
-    fill : function(){
-      this.context.fill();
-    },
-    stroke : function(){
-      this.context.stroke();
-    },
-    beginPath : function(){
-      this.context.beginPath();
-    },
-    /*
-     * Drawing each point of the grid separately. It takes grid of points and function which 
-     * will be caled after the drawing(that means fill or stroke method)
-     */
-    drawPointGrid : function (pointGrid,func){
-      this.beginPath();
-      pointGrid.points.forEach(function(point){this.drawPoint(point)},this);
-      try{
-        func.apply(this);
-      }catch( e){
-        // Fail over.
-        this.stroke();
-      }
-    },
-    clear : function (){
-      this.canvas.width = this.canvas.width;
-    }
-  };
-  
-  return Context3D;
-	
-});
-/*
  * 
  * Definition of grif of points that are going to be displayed on the canvas. Points are stored as points in space (not as points on canvas).
  * Initializing of grid is done from 3 dimensional array of 0 and 1 (1 means there is a point 0 means there isnt).
@@ -218,7 +161,7 @@ define('PointGrid',['console', 'Point', 'globals','Color'],function (console, Po
 	/*
 	 * Constructor method which takes a 3 dimensional array.
 	 */
-	PointGrid = function (mapGrid){
+	var PointGrid = function (mapGrid){
 		this.mapGrid = mapGrid;
 		this.points = [];
 		
@@ -260,10 +203,186 @@ define('PointGrid',['console', 'Point', 'globals','Color'],function (console, Po
 	
 	return PointGrid;
 });
+/*
+ * Wrapper object for canvas and some variables controling the look and feel of the display.
+ */
+define('Context3D',['console','globals','Point', 'PointGrid'],function (console, globals, Point, PointGrid){
+	
+	/*
+	 * Initialization of the wrapper with the canvas element.
+	 */
+	var Context3D = function (canvas){
+		this.canvas = canvas;
+		this.context = canvas.getContext("2d");
+		
+		// This array will hold all objects(only points or pointGrids for now).
+		// As pointGrid and point has the same rotate method we will be able to
+		// rotate all objects in this array.
+		this.model = [];
+	};
+ 
+	Context3D.prototype = {
+		
+		/*
+		 * Drawing point on tha canvas. Actual position on the canvas and radius is computed with 
+		 * consideration of the Z coordinate of the drawn point. 
+		 */
+		drawPoint : function(point){
+			if(point){
+				console.log("Drawing point x = " + point.x + ", y = " + point.y + 
+										", z = " + point.z + ", radius = " + point.diameter);
+				
+				// Pading of the layer. This means the diference between dimensions of the canvas and 
+				// dimensions of the suposed canvas with given depth (z coordinate), so that we can 
+				// move the point to the center, even after position recalculation.
+				var paddingX = (globals.CONTEXT_WIDTH - ((globals.CONTEXT_WIDTH/point.z) * globals.CONTEXT_DISTANCE))/2;
+				var paddingY = (globals.CONTEXT_HEIGHT - ((globals.CONTEXT_HEIGHT/point.z) * globals.CONTEXT_DISTANCE))/2;
+				
+				// Calculating actual position of the point on the canvas according to its depth.
+				var posX = ((point.x/point.z) * globals.CONTEXT_DISTANCE) + paddingX;
+				var posY = ((point.y/point.z) * globals.CONTEXT_DISTANCE) + paddingY;
+				var radius = (point.diameter/point.z) * globals.CONTEXT_DISTANCE;
+				
+				console.log("Drawing to posX = " + posX + ", posY = " + posY + ", radius = " + radius);
+				
+				// Draw the point only if the point does not cross borders of the canvas. 
+				if(radius > 0 && posX-radius > 0 && posX+radius < globals.CONTEXT_WIDTH && 
+					posY-radius > 0 && posY+radius < globals.CONTEXT_HEIGHT ){
+					
+					this.context.fillStyle = point.rgb;
+					this.context.moveTo(posX + radius,posY);
+					this.context.arc(posX,posY,radius,0,Math.PI*2,false);
+				}
+			}
+		},
+    fill : function(){
+      this.context.fill();
+    },
+    beginPath : function(){
+      this.context.beginPath();
+    },
+    
+    /*
+     * Drawing each point of the grid separately. It takes grid of points and function which 
+     * will be caled after the drawing(that means fill or stroke method)
+     */
+    drawPointGrid : function (pointGrid){
+    	if(pointGrid){
+	      pointGrid.points.forEach(function(point){this.drawPoint(point)},this);	
+    	}
+    },
+    clear : function (){
+      this.canvas.width = this.canvas.width;
+    },
+    clearModel : function (){
+    	this.clear();
+    	this.model = {};
+    },
+    
+    /*
+     * Part of the API, draws everything that is in the model to canvas
+     */ 
+    draw : function(){
+    	this.clear();
+    	if(this.model.length > 0){
+	    	this.beginPath();
+	    	// We draw each item to canvas;
+	    	this.model.forEach(function (item){
+	    		if(item instanceof Point){
+	    			this.drawPoint(item);
+	    		}else{
+	    			this.drawPointGrid(item);
+	    		}
+	    	}, this);
+	    	this.fill();
+	    }
+    },
+    
+    /*
+     * Add new item to model (only Point or PointGrid)
+     */
+    addModel : function (item){
+    	if(item){
+    		if(item instanceof Point){
+    			this.model.push(item);
+    		}else{
+    			this.model.push(new PointGrid(item));
+    		}
+    	}
+    },
+    
+    /*
+     * Rotate all objects in the model, and option not to draw them automaticaly.
+     */
+    rotate : function (options, rotateOnly){
+    	this.model.forEach(function (item){
+    		item.rotate(options.xy, options.xz, options.yz, options.center);
+    	});
+    	if(!rotateOnly){
+    		this.draw();
+    	}
+    }
+  };
+  
+  return Context3D;
+	
+});
 define('Pseudo3D',['Context3D','PointGrid','globals'],function(Context3D,PointGrid,globals){
 
-	return {
-		start : function(options,data){
+	window.Pseudo3D = window.Pseudo3D || function (canvas){
+		if(!canvas){
+			return null;
+		}
+		if(typeof canvas === 'string'){
+			canvas = document.getElementById(canvas);
+		}
+		var c3d = new Context3D(canvas);
+		
+		// Return only public API
+		return {
+			draw : function(){
+				c3d.draw();
+				return this;
+			},
+			clear : function(){
+				c3d.clear();
+				return this;
+			},
+			rotate : function(options, rotateOnly){
+				c3d.rotate(options, rotateOnly);
+				return this;
+			},
+			//Specific rotate functions
+			rotateXY : function(angle, center){
+				c3d.rotate({xy : angle, xz : 0, yz : 0, center : center}, false);
+				return this;
+			},
+			rotateXZ : function(angle, center){
+				c3d.rotate({xy : 0, xz : angle, yz : 0, center : center}, false);
+				return this;
+			},
+			rotateYZ : function(angle, center){
+				c3d.rotate({xy : 0, xz : 0, yz : angle, center : center}, false);
+				return this;
+			},
+			clearModel : function(){
+				c3d.clearModel();
+				return this;
+			},
+			addModel : function(model){
+				c3d.addModel(model);
+				return this;
+			}
+		};
+		
+	};
+	return window.Pseudo3D;
+	
+	
+	/*
+	
+	{
+		startAnimation : function(options,data){
 			
 			var canvas = document.getElementById(options.canvasId);
 			var c3D = new Context3D(canvas);
@@ -273,7 +392,7 @@ define('Pseudo3D',['Context3D','PointGrid','globals'],function(Context3D,PointGr
 			var rotate = function (){
 				c3D.clear();
 				c3D.drawPointGrid(grid,c3D.fill);
-				grid.rotate(0,0,options.oneStepAngle,{x:globals.X00 + options.centerXOffset,
+				grid.rotate(options.oneStepAngle,options.oneStepAngle,options.oneStepAngle,{x:globals.X00 + options.centerXOffset,
 													  y:globals.Y00,
 													  z:globals.Z00 + options.centerZOffset});
 				angle = angle + options.oneStepAngle;
@@ -283,16 +402,21 @@ define('Pseudo3D',['Context3D','PointGrid','globals'],function(Context3D,PointGr
 				}
 			};
 			rotate();
+		},
+		get3DCanvas : function (canvasId){
+			var canvas = document.getElementById(options.canvasId);
+			var c3D = new Context3D(canvas);
+			return {
+				pointGrid : null,
+				setGrid : function (grid){
+					if(grid instanceof PointGrid){
+						this.pointGrid = grid;
+					}else{
+						this.pointGrid = new PointGrid(grid);
+					}
+				}
+			};
 		}
-	}
+	};*/
 
-});
-if(window.Pseudo3D){
-	alert('Pseudo3D already defined');
-}else{
-	require(['Pseudo3D'],function(Pseudo3D){
-		window.Pseudo3D = Pseudo3D;
-	},null,true);
-};
-define("main", function(){});
-}());
+});}());
