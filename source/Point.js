@@ -29,10 +29,7 @@ define(['console'],function (console){
 										"PI, around x,y,z = " + centerPoint.x + "," +
 										 centerPoint.y + "," + centerPoint.z);
 				
-				// Calculate coordinates relative to the point, we are going rotate around.
-				var relative = {x : this.x - centerPoint.x,
-												y : this.y - centerPoint.y,
-												z : this.z - centerPoint.z};
+				
 				
 				// 'this' needs to be maped, as it`s meaning changes in the folowing loop,
 				// and adding it to the end of forEach function would not be very obvious
@@ -45,6 +42,11 @@ define(['console'],function (console){
 					
 					console.log("rotating in plane " + angle[1] + angle[2] + " by " + angle[0]);
 					
+					// Calculate coordinates relative to the point, we are going rotate around.
+					var relative = {x : self.x - centerPoint.x,
+													y : self.y - centerPoint.y,
+													z : self.z - centerPoint.z};
+						
 					// Calculating distance from center.
 					var distanceFromCenter = Math.round(
 						Math.sqrt(Math.pow(relative[angle[2]],2) +
