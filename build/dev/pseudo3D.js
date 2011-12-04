@@ -43,10 +43,7 @@ define('Point',['console'],function (console){
 										"PI, around x,y,z = " + centerPoint.x + "," +
 										 centerPoint.y + "," + centerPoint.z);
 				
-				// Calculate coordinates relative to the point, we are going rotate around.
-				var relative = {x : this.x - centerPoint.x,
-												y : this.y - centerPoint.y,
-												z : this.z - centerPoint.z};
+				
 				
 				// 'this' needs to be maped, as it`s meaning changes in the folowing loop,
 				// and adding it to the end of forEach function would not be very obvious
@@ -59,6 +56,11 @@ define('Point',['console'],function (console){
 					
 					console.log("rotating in plane " + angle[1] + angle[2] + " by " + angle[0]);
 					
+					// Calculate coordinates relative to the point, we are going rotate around.
+					var relative = {x : self.x - centerPoint.x,
+													y : self.y - centerPoint.y,
+													z : self.z - centerPoint.z};
+						
 					// Calculating distance from center.
 					var distanceFromCenter = Math.round(
 						Math.sqrt(Math.pow(relative[angle[2]],2) +
@@ -303,6 +305,7 @@ define('Context3D',['console','globals','Point', 'PointGrid'],function (console,
      */
     addModel : function (item){
     	if(item){
+    		// TODO change this or make PointGrid and Point visible outside
     		if(item instanceof Point){
     			this.model.push(item);
     		}else{
@@ -327,6 +330,9 @@ define('Context3D',['console','globals','Point', 'PointGrid'],function (console,
   return Context3D;
 	
 });
+/*
+ * Definition of public API
+ */
 define('Pseudo3D',['Context3D','PointGrid','globals'],function(Context3D,PointGrid,globals){
 
 	window.Pseudo3D = window.Pseudo3D || function (canvas){
@@ -377,46 +383,5 @@ define('Pseudo3D',['Context3D','PointGrid','globals'],function(Context3D,PointGr
 		
 	};
 	return window.Pseudo3D;
-	
-	
-	/*
-	
-	{
-		startAnimation : function(options,data){
-			
-			var canvas = document.getElementById(options.canvasId);
-			var c3D = new Context3D(canvas);
-			var grid = new PointGrid(data);
-			var angle = 0;
-
-			var rotate = function (){
-				c3D.clear();
-				c3D.drawPointGrid(grid,c3D.fill);
-				grid.rotate(options.oneStepAngle,options.oneStepAngle,options.oneStepAngle,{x:globals.X00 + options.centerXOffset,
-													  y:globals.Y00,
-													  z:globals.Z00 + options.centerZOffset});
-				angle = angle + options.oneStepAngle;
-					
-				if(angle <= (2*Math.PI + options.oneStepAngle)){
-					setTimeout(rotate,options.oneStepTime);
-				}
-			};
-			rotate();
-		},
-		get3DCanvas : function (canvasId){
-			var canvas = document.getElementById(options.canvasId);
-			var c3D = new Context3D(canvas);
-			return {
-				pointGrid : null,
-				setGrid : function (grid){
-					if(grid instanceof PointGrid){
-						this.pointGrid = grid;
-					}else{
-						this.pointGrid = new PointGrid(grid);
-					}
-				}
-			};
-		}
-	};*/
 
 });}());
