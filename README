@@ -1,3 +1,8 @@
-Simple JavaScript project to get some experience with JavaScript, do not expect anything useful from this as it is stil work in progres(and probably not even later).
+Simple JavaScript project to get some experience with JavaScript, 
+do not expect anything useful from this as it is stil work in progres(and probably not even later).
 
-Esentialy, this code just creates points according to some grid (in this case three dimensional array). Position and dimensions of those points are then calculated to simulate 3D view. Only tested in Chrome 13.
+Esentialy, this code just creates points according to some grid (in this case three dimensional array).
+Position and dimensions of those points are then calculated to simulate 3D view.
+
+#TODO:
+Add animations
