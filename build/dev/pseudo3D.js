@@ -68,31 +68,36 @@ define('Point',['console'],function (console){
 						)
 					);
 					
-					// To correctly compute the angle we need to know into which quadrant
-					// are we going to fall.
-					var quadrant = relative[angle[1]] >= 0 ? 
-						(relative[angle[2]] >= 0? 1 : 2) :
-						(relative[angle[2]] >= 0 ? 4 : 3);
-
-					var angleFromCenter = distanceFromCenter === 0 ? 0 : Math.asin(Math.abs(relative[angle[1]])/distanceFromCenter);
-
-					switch(quadrant){
-						case 1: break;
-						case 2:	angleFromCenter = Math.PI - angleFromCenter;
-								break;
-						case 3:	angleFromCenter = Math.PI + angleFromCenter;
-								break;
-						case 4:	angleFromCenter = Math.PI*2 - angleFromCenter;
-								break;
+					if(distanceFromCenter != 0){
+						// To correctly compute the angle we need to know into which quadrant
+						// are we going to fall.
+						var quadrant = relative[angle[1]] >= 0 ? 
+							(relative[angle[2]] >= 0? 1 : 2) :
+							(relative[angle[2]] >= 0 ? 4 : 3);
+	
+						var angleFromCenter = Math.asin(Math.abs(relative[angle[1]])/distanceFromCenter);
+						
+						switch(quadrant){
+							case 1: break;
+							case 2:	angleFromCenter = Math.PI - angleFromCenter;
+									break;
+							case 3:	angleFromCenter = Math.PI + angleFromCenter;
+									break;
+							case 4:	angleFromCenter = Math.PI*2 - angleFromCenter;
+									break;
+						}
+						console.log("angleFromCenter = " + angleFromCenter/Math.PI + "PI");
+						
+						// Adding angle to x,y,z
+						self[angle[1]] = Math.round(
+							((Math.sin(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[1]])*1000000
+						)/1000000;
+						self[angle[2]] = Math.round(
+							((Math.cos(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[2]])*1000000
+						)/1000000;
+						
+						console.log("after rotation x,y,z = " + self.x + "," + self.y + "," + self.z);
 					}
-					console.log("angleFromCenter = " + angleFromCenter/Math.PI + "PI");
-					
-					// Adding angle to x,y,z
-					self[angle[1]] = Math.round(((Math.sin(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[1]])*1000)/1000;
-					self[angle[2]] = Math.round(((Math.cos(angle[0] + angleFromCenter) * distanceFromCenter) + centerPoint[angle[2]])*1000)/1000;
-					
-					console.log("after rotation x,y,z = " + self.x + "," + self.y + "," + self.z);
-					
 				});
 			}
 		},
