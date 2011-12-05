@@ -46,6 +46,9 @@ define(['Context3D','PointGrid','globals'],function(Context3D,PointGrid,globals)
 			addModel : function(model){
 				c3d.addModel(model);
 				return this;
+			},
+			animate : function(func,cycles,interval){
+				c3d.animate(func,cycles,interval,this);
 			}
 		};
 		
