@@ -60,8 +60,12 @@ define(['console'],function (console){
 						var quadrant = relative[angle[1]] >= 0 ? 
 							(relative[angle[2]] >= 0? 1 : 2) :
 							(relative[angle[2]] >= 0 ? 4 : 3);
-	
-						var angleFromCenter = Math.asin(Math.abs(relative[angle[1]])/distanceFromCenter);
+						
+						var sine = Math.abs(relative[angle[1]])/distanceFromCenter;
+						if(Math.abs(sine) > 1){
+							sine = sine - Math.round(sine);
+						}
+						var angleFromCenter = Math.asin(sine);
 						
 						switch(quadrant){
 							case 1: break;
