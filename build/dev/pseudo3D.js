@@ -74,8 +74,12 @@ define('Point',['console'],function (console){
 						var quadrant = relative[angle[1]] >= 0 ? 
 							(relative[angle[2]] >= 0? 1 : 2) :
 							(relative[angle[2]] >= 0 ? 4 : 3);
-	
-						var angleFromCenter = Math.asin(Math.abs(relative[angle[1]])/distanceFromCenter);
+						
+						var sine = Math.abs(relative[angle[1]])/distanceFromCenter;
+						if(Math.abs(sine) > 1){
+							sine = sine - Math.round(sine);
+						}
+						var angleFromCenter = Math.asin(sine);
 						
 						switch(quadrant){
 							case 1: break;
@@ -329,7 +333,21 @@ define('Context3D',['console','globals','Point', 'PointGrid'],function (console,
     	if(!rotateOnly){
     		this.draw();
     	}
+    },
+    
+    animate : function (func, cycles, interval,apiObject){
+
+    	var count = 0;
+			(function rotate(){
+				func.apply(apiObject);
+				if(count < cycles){
+					setTimeout(rotate,interval);
+				}
+				count = count + 1;
+			})();
+			
     }
+    
   };
   
   return Context3D;
@@ -383,6 +401,9 @@ define('Pseudo3D',['Context3D','PointGrid','globals'],function(Context3D,PointGr
 			addModel : function(model){
 				c3d.addModel(model);
 				return this;
+			},
+			animate : function(func,cycles,interval){
+				c3d.animate(func,cycles,interval,this);
 			}
 		};
 		
