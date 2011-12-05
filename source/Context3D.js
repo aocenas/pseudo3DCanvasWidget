@@ -117,7 +117,21 @@ define(['console','globals','Point', 'PointGrid'],function (console, globals, Po
     	if(!rotateOnly){
     		this.draw();
     	}
+    },
+    
+    animate : function (func, cycles, interval,apiObject){
+
+    	var count = 0;
+			(function rotate(){
+				func.apply(apiObject);
+				if(count < cycles){
+					setTimeout(rotate,interval);
+				}
+				count = count + 1;
+			})();
+			
     }
+    
   };
   
   return Context3D;
